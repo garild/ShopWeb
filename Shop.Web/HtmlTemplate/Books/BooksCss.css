@@ -1,0 +1,72 @@
+﻿body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.428571429;
+    color: #333333;
+    background-color: #ffffff;
+}
+
+.table thead > tr > th,
+.table tbody > tr > th,
+.table tfoot > tr > th,
+.table thead > tr > td {
+    padding: 8px;
+    line-height: 1.428571429;
+    vertical-align: top;
+    background: #e2e2e2;
+}
+
+.nav-tabs {
+    border-bottom: 2px solid #DDD;
+}
+
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > a.active {
+        border: none;
+        color: black;
+        font-weight: bold;
+        background: #fdfcff;
+        margin-right: 0px !important;
+        line-height: 1.228571429;
+        border-radius: 20px 20px 0 0 !important;
+    }
+
+    .nav-tabs > li > a {
+        border: none;
+        color: black;
+        font-weight: bold;
+        background: #fdfcff;
+        margin-right: 0px !important;
+        line-height: 1.228571429;
+        border: 1px solid;
+        border-radius: 20px 20px 0 0 !important;
+    }
+
+        .nav-tabs > li.active > a, .nav-tabs > li > a:hover {
+            border: none;
+            color: black;
+            font-weight: bold;
+            background: #a8a7a9;
+            margin-right: 0px !important;
+            line-height: 1.228571429;
+            border: 1px solid;
+            border-radius: 20px 20px 0 0 !important;
+        }
+
+            .nav-tabs > li.active > a::after, .nav-tabs > li:hover > a::after {
+                transform: scale(1);
+            }
+
+
+.table-bordered {
+    border: 1px solid #dddddd !important;
+}
+
+.nav-tabs > li {
+    width: 192px;
+    text-align: center;
+}
+
+    .nav-tabs > li > a {
+        padding: 5px 5px;
+    }
+}

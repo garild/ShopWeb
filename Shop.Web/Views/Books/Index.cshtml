@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Katalog Ksiązek</h2>
+
+<br />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" />
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-animate.js"></script>
+<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.14.3.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/angular-sanitize.min.js"></script>
+<script src="~/Js/Modules.js"></script>
+<link href="/HtmlTemplate/Books/BooksCss.css" rel="stylesheet" />
+
+<div id="0">
+
+    <uib-tabset>
+        <uib-tab ng-repeat="tab in TabList" ng-click="LoadData(tab.BookType)" heading="{{tab.title}}" active="tab.active" disable="tab.disabled">
+            <div ng-include="tab.template" ng-show="tab.active"></div>
+        </uib-tab>
+    </uib-tabset>
+</div>
