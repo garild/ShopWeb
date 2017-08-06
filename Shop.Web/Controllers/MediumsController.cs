@@ -5,7 +5,7 @@ namespace Shop.Web.Controllers
 {
     public class MediumsController : Controller
     {
-        private MediumService mediumService = null;
+        private IMedium mediumService = null;
         // GET: Mediums
         public ActionResult Index()
         {
@@ -14,8 +14,8 @@ namespace Shop.Web.Controllers
 
         public JsonResult GetMediums()
         {
-            mediumService = new MediumService(new Mediums());
-            var result = mediumService.repository.GetDataDupa();
+            mediumService = new Mediums();
+            var result = mediumService.GetData();
             return new JsonResult { Data = result, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
     }

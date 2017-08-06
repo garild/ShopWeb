@@ -1,8 +1,10 @@
-﻿namespace Shop.Web.Products.Shop
+﻿using System.Collections.Generic;
+
+namespace Shop.Web.Products.Shop
 {
     public class ShopCart
     {
-        public Product Product { get; set; }
+        public List<Product> Product { get; set; }
         public int Quantity { get; set; }
     }
     public class Product

@@ -10,9 +10,9 @@ namespace Shop.Web.BLL.Service.Covers.Implementation
     {
         // DIP
         public readonly ICover repository;
-        public CoverService(ICover medium)
+        public CoverService(ICover cover)
         {
-            repository = medium;
+            repository = cover;
         }
 
     }

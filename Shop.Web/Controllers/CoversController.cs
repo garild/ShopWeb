@@ -5,7 +5,7 @@ namespace Shop.Web.Controllers
 {
     public class CoversController : Controller
     {
-        private CoverService coverService = null;
+        private static ICover coverService = null;
         // GET: Covers
         public ActionResult Index()
         {
@@ -14,8 +14,8 @@ namespace Shop.Web.Controllers
 
         public JsonResult GetCovers()
         {
-            coverService = new CoverService(new Covers());
-            var result = coverService.repository.GetData();
+            coverService = new Covers();
+            var result = coverService.GetData();
             return new JsonResult { Data = result, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
     }

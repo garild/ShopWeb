@@ -5,7 +5,7 @@ namespace Shop.Web.Controllers
 {
     public class PublishersController : Controller
     {
-        private PublisherService publisherService = null;
+        private IPublisher publisherService = null;
         public ActionResult Index()
         {
             return View();
@@ -13,8 +13,8 @@ namespace Shop.Web.Controllers
 
         public JsonResult GetPublishers()
         {
-            publisherService = new PublisherService(new Publishers());
-            var result = publisherService.repository.GetData();
+            publisherService = new Publishers();
+            var result = publisherService.GetData();
             return new JsonResult { Data = result, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
     }

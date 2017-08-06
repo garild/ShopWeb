@@ -15,12 +15,10 @@ namespace Shop.Web.BLL.Service.Books.Implementation
     public class BooksService 
     {
         public readonly IBook repository;
-        public readonly IBookContractor contractor;
 
         public BooksService(IBook _book)
         {
             repository = _book;
-            contractor = new BookContractor();
         }
 
     }
@@ -67,7 +65,12 @@ namespace Shop.Web.BLL.Service.Books.Implementation
 
         public List<Book> FindBook(int search)
         {
-            throw new NotImplementedException();
+            var searchBy = $"{search}";
+            using (var _ctx = new ShopWebRepository<ShopWebEntities>())
+            {
+                var data = _ctx.Context.Books.Where(p => p.Name.Contains(searchBy) || p.Publisher.Contains(searchBy)).ToList();
+                return data;
+            }
         }
     }
 
@@ -78,7 +81,12 @@ namespace Shop.Web.BLL.Service.Books.Implementation
 
         public List<Book> FindBook(int search)
         {
-            throw new NotImplementedException();
+            var searchBy = $"{search}";
+            using (var _ctx = new ShopWebRepository<ShopWebEntities>())
+            {
+                var data = _ctx.Context.Books.Where(p => p.BookType_Id == (int)type && p.Name.Contains(searchBy) || p.Publisher.Contains(searchBy)).ToList();
+                return data;
+            }
         }
 
         public List<Book> GetBooks()
@@ -98,51 +106,48 @@ namespace Shop.Web.BLL.Service.Books.Implementation
 
         public List<Book> FindBook(int search)
         {
-            throw new NotImplementedException();
+            var searchBy = $"{search}";
+            using (var _ctx = new ShopWebRepository<ShopWebEntities>())
+            {
+                var data = _ctx.Context.Books.Where(p => p.BookType_Id == (int)type && p.Name.Like(searchBy) || p.Publisher.Like(searchBy)).ToList();
+                return data;
+            }
         }
 
         public List<Book> GetBooks()
         {
             using (var _ctx = new ShopWebRepository<ShopWebEntities>())
             {
-                var data = _ctx.Context.Books.Where(p => p.BookType_Id == (int)bookType).ToList(); ;
+                var data = _ctx.Context.Books.Where(p => p.BookType_Id == (int)bookType).ToList();
                 return data;
             }
         }
     }
     // Nowości
-    public class News : IBook, IBookType
+    public class News : IBook
     {
-        private BookType type = BookType.News;
-        public BookType bookType { get => type; set => type = value; }
-
-        public List<Book> FindBook(int search)
-        {
-            throw new NotImplementedException();
-        }
-
         public List<Book> GetBooks()
         {
             using (var _ctx = new ShopWebRepository<ShopWebEntities>())
             {
-                var data = _ctx.Context.Books.Where(p => p.DateRelease >= DateTime.Now && DbFunctions.DiffDays(DateTime.Now,p.DateRelease) <= 14).ToList();
+                var data = _ctx.Context.Books.Where(p => p.DateRelease >= DateTime.Now && DbFunctions.DiffDays(DateTime.Now, p.DateRelease) <= 14).ToList();
+                return data;
+            }
+        }
+        public List<Book> FindBook(int search)
+        {
+            var searchBy = $"{search}";
+            using (var _ctx = new ShopWebRepository<ShopWebEntities>())
+            {
+                var data = GetBooks().Where(p => p.Name.Contains(searchBy) || p.Publisher.Contains(searchBy)).ToList();
                 return data;
             }
         }
     }
 
     //  Zapowiedzi
-    public class Upcomming : IBook, IBookType
+    public class Upcomming : IBook
     {
-        private BookType type = BookType.SuperOccasions;
-        public BookType bookType { get => type; set => type = value; }
-
-
-        public List<Book> FindBook(int search)
-        {
-            throw new NotImplementedException();
-        }
-
         public List<Book> GetBooks()
         {
             using (var _ctx = new ShopWebRepository<ShopWebEntities>())
@@ -151,24 +156,36 @@ namespace Shop.Web.BLL.Service.Books.Implementation
                 return data;
             }
         }
-    }
-
-    // Super Okazje
-    public class Promotions : IBook, IBookType
-    {
-        private BookType type = BookType.SuperOccasions;
-        public BookType bookType { get => type; set => type = value; }
 
         public List<Book> FindBook(int search)
         {
-            throw new NotImplementedException();
+            var searchBy = $"{search}";
+            using (var _ctx = new ShopWebRepository<ShopWebEntities>())
+            {
+                var data = GetBooks().Where(p => p.Name.Contains(searchBy) || p.Publisher.Contains(searchBy)).ToList();
+                return data;
+            }
+        }
+    }
+
+    // Super Okazje
+    public class SuperPromotions : IBook
+    {
+        public List<Book> FindBook(int search)
+        {
+            var searchBy = $"{search}";
+            using (var _ctx = new ShopWebRepository<ShopWebEntities>())
+            {
+                var data = _ctx.Context.Books.Where(p => p.IsSuperPromtion == true && p.Name.Contains(searchBy) || p.Publisher.Like($"{search}")).ToList();
+                return data;
+            }
         }
 
         public List<Book> GetBooks()
         {
             using (var _ctx = new ShopWebRepository<ShopWebEntities>())
             {
-                var data = _ctx.Context.Books.Where(p => p.BookType_Id == (int)bookType).ToList();
+                var data = _ctx.Context.Books.Where(p => p.IsSuperPromtion == true).ToList();
                 return data;
             }
         }

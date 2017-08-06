@@ -5,7 +5,7 @@ namespace Shop.Web.BLL.Service.Mediums.Implementation
 {
     public interface IMedium
     {
-        List<Medium> GetDataDupa();
+        List<Medium> GetData();
     }
 
 }

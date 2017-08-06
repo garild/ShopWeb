@@ -5,7 +5,7 @@ namespace Shop.Web.Controllers
 {
     public class EditionsController : Controller
     {
-        private EditionService editionService = null;
+        
         // GET: Editions
         public ActionResult Index()
         {
@@ -15,8 +15,8 @@ namespace Shop.Web.Controllers
 
         public JsonResult GetEdition()
         {
-            editionService = new EditionService(new Editions());
-            var result = editionService.repository.GetData();
+            Editions _service = new Editions();
+            var result = _service.GetData();
             return new JsonResult { Data = result, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
     }

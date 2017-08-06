@@ -18,7 +18,7 @@ namespace Shop.Web.BLL.Service.Mediums.Implementation
     }
     public class Mediums : IMedium
     {
-        public List<Medium> GetDataDupa()
+        public List<Medium> GetData()
         {
             using (var _ctx = new ShopWebRepository<ShopWebEntities>())
             {

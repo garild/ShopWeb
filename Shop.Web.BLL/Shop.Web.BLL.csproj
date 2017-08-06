@@ -62,12 +62,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Shop.Web.BLL.Data\Models\Books_D_NewsType.cs" />
     <Compile Include="Shop.Web.BLL.HttpUtils\Json\JsonConverter.cs" />
     <Compile Include="Shop.Web.BLL.Data\Enum\BookType.cs" />
     <Compile Include="Shop.Web.BLL.Data\Enum\NewsType.cs" />
     <Compile Include="Shop.Web.BLL.Service\Books\Interface\IBookContractor.cs" />
     <Compile Include="Shop.Web.BLL.Service\Books\Interface\IBook.cs" />
     <Compile Include="Shop.Web.BLL.Service\Books\Implementation\BooksService.cs" />
+    <Compile Include="Shop.Web.BLL.Service\Books\Interface\INewType.cs" />
     <Compile Include="Shop.Web.BLL.Service\Books\Interface\IBookType.cs" />
     <Compile Include="Shop.Web.BLL.Service\Editions\Interface\IEdition.cs" />
     <Compile Include="Shop.Web.BLL.Service\Editions\Implementation\EditionService.cs" />
@@ -93,7 +95,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>

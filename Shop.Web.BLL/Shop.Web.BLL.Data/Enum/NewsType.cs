@@ -8,9 +8,7 @@ namespace Shop.Web.BLL.Data.Enum
 {
     public enum NewsType
     {
-        None = 0,
         News = 1,
         Upcoming = 2,
-        Promotions = 3
     }
 }

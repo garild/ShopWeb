@@ -7,25 +7,31 @@ namespace Shop.Web.Controllers
 {
     public class BooksController : Controller
     {
-        public List<ShopCart> Cart
-        {
-            get
-            {
-                return Session["ShopCart"] as List<ShopCart>;
-            }
-            set
-            {
-                Session["ShopCart"] = value;
-            }
-        }
+      
+
         public BooksController()
         {
 
         }
+
+
         public ActionResult Index()
         {
             return View();
         }
+
+        #region FindBook
+
+        public JsonResult FindBookAll(int search)
+        {
+            AllBooks _services = new AllBooks();
+            var result = _services.FindBook(search);
+            return new JsonResult { Data = result, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+        }
+
+        #endregion
+
+        #region GetBook
 
         public JsonResult GetAllBooks()
         {
@@ -55,7 +61,7 @@ namespace Shop.Web.Controllers
 
         public JsonResult GetPromotions()
         {
-            Promotions _services = new Promotions();
+            SuperPromotions _services = new SuperPromotions();
             var result = _services.GetBooks();
             return new JsonResult { Data = result, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
@@ -67,27 +73,6 @@ namespace Shop.Web.Controllers
             return new JsonResult { Data = result, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
 
-        public JsonResult GetCart()
-        {
-            return new JsonResult { Data = Cart, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-        }
-
-        public JsonResult OrderBook(ShopCart item)
-        {
-          
-            if (Cart != null)
-            {
-                var idnex = Cart.IndexOf(item);
-                if (idnex > 0)
-                    Cart[idnex].Quantity += item.Quantity;
-                else
-                {
-                    Cart.Add(item);
-                }
-                
-            }
-                
-            return new JsonResult { Data = Cart, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-        }
+        #endregion
     }
 }

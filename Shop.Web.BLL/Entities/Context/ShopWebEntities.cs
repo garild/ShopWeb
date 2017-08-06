@@ -21,7 +21,7 @@ namespace DataLayer
         }
 
         public DbSet<Book> Books { get; set; }
-        public DbSet<Books_D_BookType> Books_D_BookType { get; set; }
+        public DbSet<Books_D_BookType> Books_D_BookTypes { get; set; }
         public DbSet<Cover> Covers { get; set; }
         public DbSet<Edition> Editions { get; set; }
         public DbSet<Medium> Mediums { get; set; }
@@ -29,49 +29,12 @@ namespace DataLayer
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Book>()
-                .Property(e => e.Name)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Book>()
-                .Property(e => e.Author)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Book>()
-                .Property(e => e.Publisher)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Books_D_BookType>()
-                .Property(e => e.Name)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Books_D_BookType>()
-                .Property(e => e.Description)
-                .IsUnicode(false);
-
             modelBuilder.Entity<Books_D_BookType>()
                 .HasMany(e => e.Books)
                 .WithRequired(e => e.Books_D_BookType)
                 .HasForeignKey(e => e.BookType_Id)
                 .WillCascadeOnDelete(false);
-           
-            modelBuilder.Entity<Cover>()
-                .Property(e => e.Name)
-                .IsUnicode(false);
 
-            modelBuilder.Entity<Edition>()
-                .Property(e => e.Name)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Medium>()
-                .Property(e => e.Name)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Publisher>()
-                .Property(e => e.Name)
-                .IsUnicode(false);
-
-        
         }
     }
 }

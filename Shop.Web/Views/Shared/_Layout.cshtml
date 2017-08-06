@@ -6,6 +6,40 @@
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        .p {
+            margin: 0 0 8px;
+        }
+        small.has-error-inpunt {
+        background: #c72241 !important;
+        padding: 3px !important;
+        font-size: 11px !important;
+        margin: 3px 0 0 0;
+        border-radius: 3px;
+        -webkit-border-radius: 3px;
+        color: #fff;
+        font-family: "Source Sans Pro", sans-serif;
+        font-weight: 400;
+        text-transform: inherit;
+        display: inline-table;
+                                }
+
+        .modal-body
+        {
+            padding: 40px !important;
+        }
+
+        .modal-header-success {
+            color: #fff;
+            padding: 9px 15px;
+            border-bottom: 1px solid #eee;
+            background-color: #5cb85c;
+            -webkit-border-top-left-radius: 5px;
+            -webkit-border-top-right-radius: 5px;
+            -moz-border-radius-topleft: 5px;
+            -moz-border-radius-topright: 5px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
         .search-form .form-group {
             transition: all 0.35s, border-radius 0s;
             width: 32px;
@@ -72,6 +106,10 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body ng-app="MyBooks">
+
+    
+    
+
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -84,6 +122,11 @@
         </div>
     </div>
     <div class="container body-content" ng-controller="BooksController">
+
+
+        <modal  visible="IsModalVisible">
+        </modal>
+
         <div class="row">
             <br />
             <TABLE class="table table-striped table-bordered">
@@ -94,22 +137,22 @@
                                 <h3><b>Księgarnia Internetowa</b></h3><h6>Nasze sklepy prowadzimy z pasją!</h6>
                             </div>
                             <div class="col-xs-6 col-sm-5">
+                                <form name="cartList">
                                 <div class="search-form">
                                     <label><b>Wyszukiwarka </b></label>
                                     <div class="form-group btn-group">
-                                        <input type="number" ng-keyup="RestrictSearchPhrase(SearchPhrase,10)" class="form-control" ng-model="SearchPhrase" style="padding: 6px 40px"  ng-class="{'red':SearchPhrase.$invalid}" />
-                                        <span ng-show=""></span>
+                                        <input type="number" name="sreachData" class="form-control" ng-model="SearchPhrase" style="padding: 6px 40px"  />
                                         <span class="glyphicon glyphicon-search form-control-feedback"></span>
 
                                     </div>
                                     <button type="button" style="padding:6px 20px;margin-top:-10px" class="btn btn-default" ng-click="FindBook(SearchPhrase)">Szukaj</button>
                                 </div>
-
-
+                                  <small class="has-error-inpunt" ng-show="!SearchPhraseIsValid(SearchPhrase,10)">Wartość tego pola musi być w przedziale 1-10.</small>
+                             </form>
                             </div>
                             <div class="col-xs-6 col-sm-3">
                                 <div class="search-form" style="margin-top:20px;margin-left:10px">
-                                    <label>Twój koszyk</label>  <div style="width:150px;padding:10px 5px; margin-bottom:0;display:inline-block" class="well">Liczba produktów: 0</div>
+                                    <label>Twój koszyk</label>  <div style="width:150px;padding:10px 5px; margin-bottom:0;display:inline-block" class="well">Liczba produktów: {{$root.productCount}}</div>
 
                                 </div>
                             </div>

@@ -1,10 +1,10 @@
 ﻿/// <reference path="../scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../scripts/typings/angularjs/angular-resource.d.ts" />
-
+/// <reference path="ShopCart.ts" />
 
 module BooksModule {
-
     var app = angular.module("MyBooks", ['ui.bootstrap', 'ngSanitize']);
+
 
     app.filter("DateFormat", function () {
         return function (rawDate: string) {
@@ -27,11 +27,19 @@ module BooksModule {
         Upcoming = 5,
         SuperOccasions = 6
     }
+    interface DataModel {
+        Id: number
+        Name: string
+    }
+
 
     app.controller("BooksController", function ($scope, $http) {
 
-        $scope.SearchPhrase = null;
-        $scope.Result = [];
+        $scope.isLoading = true
+        $scope.productCount = 0
+        $scope.IsBookType = 1
+        $scope.SearchPhrase;
+        $scope.DataIsNull = false;
         $scope.DataList = []
         $scope.sortType = "name"
         $scope.sortReverse = true
@@ -39,85 +47,126 @@ module BooksModule {
         $scope.IsBookType = null;
         $scope.IsNewType = null;
 
-        $scope.RestrictSearchPhrase = function (value: number, max) {
-            if (value > max) {
+        $scope.showModal = false;
+        $scope.open = function () {
+            $scope.showModal = !$scope.showModal;
+        };
+
+        $scope.SearchPhraseIsValid = function (data, max: number) {
+            if (data !== undefined && parseInt(data) > max) {
                 return false;
             }
+            return true;
         }
-        $scope.FindBook = function (phrase)
-        {
-            console.log(phrase)
+        $scope.FindBook = function (phrase) {
+            $scope.DataList = null
+            console.log($scope.IsBookType)
+            if (phrase !== undefined) {
+
+                if (parseInt(phrase) > 0 && parseInt(phrase) < 11) {
+                    $http.post(
+                        "Books/FindBookAll",
+                        {
+                            "search": phrase
+                        }).then(function (fillFuled) {
+                            if (fillFuled !== null && fillFuled.data.length > 0) {
+                                $scope.DataList = fillFuled.data;
+                            }
+                            else
+                                $scope.DataIsNull = true
+                        })
+                }
+                if (parseInt(phrase) == 0) {
+                    GetData($scope.IsBookType == null ? 1: $scope.IsBookType)
+                }
+            }
         }
+
+
+
         //OnLoad
-        $http.get('/Books/GetAllBooks').then(function (d) {
-            $scope.DataList = d.data;
-            console.log(d.data)
+
+        $http.get('/Orders/GetOrdersList').then(function (fillFulled) {
+            if (fillFulled.data !== null) {
+                $scope.productCount = fillFulled.Quantity;
+            }
+            $scope.productCount = 0;
         }, function (error) {
-            alert('FAIL')
+            alert(error)
         })
+
+        {
+            $scope.isLoading = true;
+            $http.get('/Books/GetAllBooks').then(function (d) {
+                $scope.DataList = d.data;
+               
+                $scope.isLoading = false;
+            }, function (error) {
+                $scope.isLoading = false;
+                alert('FAIL')
+            })
+        }
 
         // Tab list
         $scope.TabList = [{
             title: 'Wszystkie',
             active: true,
-            BookType: BooksType.All,
+            SearchBy: BooksType.All,
             template: "/HtmlTemplate/Books/TabList.html"
         }, {
             title: 'Audioboki',
             active: false,
-            BookType: BooksType.AudioBooks,
+            SearchBy: BooksType.AudioBooks,
             template: "/HtmlTemplate/Books/TabList.html"
         },
         {
             title: 'E-Booki',
             active: false,
-            BookType: BooksType.EBooks,
+            SearchBy: BooksType.EBooks,
             template: "/HtmlTemplate/Books/TabList.html"
         },
         {
             title: 'Nowości',
             active: false,
-            BookType: BooksType.News,
+            SearchBy: BooksType.News,
             template: "/HtmlTemplate/Books/TabList.html"
         },
         {
             title: 'Zapowiedzi',
             active: false,
-            BookType: BooksType.Upcoming,
+            SearchBy: BooksType.Upcoming,
             template: "/HtmlTemplate/Books/TabList.html"
         }, {
             title: 'Super Okazje',
             active: false,
-            BookType: BooksType.SuperOccasions,
+            SearchBy: BooksType.SuperOccasions,
             template: "/HtmlTemplate/Books/TabList.html"
         }
         ];
 
-        function Search()
-        {
 
-        }
-        $scope.LoadData = function (booksType: BooksType)
-        {
-            return GetData(booksType,null)
+        $scope.LoadData = function (booksType: BooksType) {
+             $scope.DataList = null
+            $scope.isLoading = true;
+            return GetData(booksType)
         }
 
 
         // Load Data on Tab click
-         function GetData(booksType: BooksType, searchPhrase:any) {
-            $scope.IsBookType  = booksType;
+        function GetData(booksType: BooksType) {
+            $scope.IsBookType = booksType;
             let apiUrl: string = '';
 
             switch (booksType) {
                 case BooksType.All:
                     {
                         apiUrl = '/Books/GetAllBooks';
-                      
+
                     } break;
                 case BooksType.AudioBooks:
                     {
                         apiUrl = '/Books/GetAudioBooks';
-                      
+
                     } break;
                 case BooksType.EBooks:
                     {
@@ -142,11 +191,137 @@ module BooksModule {
             }
 
             $http.get(apiUrl).then(function (d: any) {
-                $scope.DataList = d.data;
+                if (d !== null && d.data.length > 0) {
+                    $scope.DataList = d.data;
+                    $scope.isLoading = false;
+                }
             }, function (error, status) {
+                $scope.isLoading = false;
                 console.log(error, status)
             })
+
         }
+
+
+        $scope.IsModalVisible = false;
+        $scope.open = function () {
+            $scope.IsModalVisible = !$scope.IsModalVisible;
+        };
+
+
     });
+
+    //Modal Cart
+    app.directive('modal', function () {
+        return {
+            templateUrl: '/HtmlTemplate/ShopCart/ModalCart.html',
+            restrict: 'E',
+            transclude: true,
+            replace: true,
+            scope: true,
+            link: function postLink(scope, element, attrs) {
+
+                scope.$watch(attrs.visible, function (value) {
+                    if (value == true)
+                        $(element).modal('show');
+                    else
+                        $(element).modal('hide');
+                });
+
+                $(element).on('shown.bs.modal', function () {
+                    scope.$apply(function () {
+                        scope.$parent[attrs.visible] = true;
+                    });
+                });
+
+                $(element).on('hidden.bs.modal', function () {
+                    scope.$apply(function () {
+                        scope.$parent[attrs.visible] = false;
+                    });
+                });
+            }
+        };
+    });
+
+    app.controller("CartController", function ($scope, $http) {
+
+        $scope.SelectedEdtion as DataModel;
+        $scope.SelectedCovers as DataModel;
+        $scope.SelectedPublisher as DataModel;
+        $scope.SelectedMedium as DataModel;
+        $scope.Quantity = 1
+
+
+        //Modal Cart Selection onLoad
+        $http.get("Covers/GetCovers").then(function (fillFulled) {
+            if (fillFulled.data !== null) {
+                $scope.CoversList = fillFulled.data as DataModel
+            }
+        }, function (errorHandler) {
+            console.log(errorHandler)
+        })
+
+        $http.get("Publishers/GetPublishers").then(function (fillFulled) {
+            if (fillFulled.data !== null) {
+                $scope.PublisherList = fillFulled.data
+            }
+        }, function (errorHandler) {
+            console.log(errorHandler)
+        })
+
+        $http.get("Mediums/GetMediums").then(function (fillFulled) {
+            if (fillFulled.data !== null) {
+                $scope.MediumsList = fillFulled.data
+            }
+        }, function (errorHandler) {
+            console.log(errorHandler)
+        })
+
+        $http.get("Editions/GetEdition").then(function (fillFulled) {
+            if (fillFulled.data !== null) {
+                $scope.EditionsList = fillFulled.data
+            }
+        }, function (errorHandler) {
+            console.log(errorHandler)
+        })
+        //End Modal Cart Selection onLoad
+
+        $scope.AddToCart = function () {
+            var product = [{
+                "CoverId": $scope.SelectedCovers.Id,
+                "EditionId": $scope.SelectedEdtion.Id,
+                "MediumId": $scope.SelectedMedium.Id,
+                "PublisherId": $scope.SelectedPublisher.Id
+            }]
+
+            $http.post(
+                "Orders/OrderBook",
+                {
+                    "item": {
+                        "Quantity": $scope.Quantity,
+                        "Product": product
+                    }
+                }).then(function (fillFulled) {
+                    console.log($scope.productCount)
+                    $scope.productCount = fillFulled.data[0].Quantity
+                    console.log($scope.productCount, fillFulled.data[0].Quantity)
+                })
+
+        }
+
+        $scope.ValidateQuantity = function (data: number) {
+            if (data > 999 || data < 1)
+                return false;
+            return true;
+        }
+
+        $scope.ValidateForm = function (cover, edition, publisher, medium, quantity: number) {
+            return cover != undefined && edition != undefined && publisher != undefined && medium != undefined && $scope.ValidateQuantity(quantity)
+        }
+
+    });
+
+
+
 
 }

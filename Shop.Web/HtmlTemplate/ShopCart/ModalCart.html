@@ -1,0 +1,75 @@
+﻿<div class="modal fade">
+    <section class="shopweb">
+        <div class="modal-dialog" ng-controller="CartController">
+            <form name="cartForm" class="form-horizontal">
+                <div class="modal-content">
+                    <div class="modal-header-success">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Dodaj do koszyka</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="email">Okładka:</label>
+                            <div class="col-sm-10">
+                                <select name="covers" class="form-control" required ng-model="SelectedCovers" ng-options="item.Name for item in CoversList">
+                                    <option value="">-- Wybierz --</option>
+                                </select>
+                                <small class="has-error-inpunt" ng-show="!cartForm.covers.$valid">Pole <b>Okładka</b> jest wymagane.</small>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="email">Wydawnictwo:</label>
+                            <div class="col-sm-10">
+                                <select name="publisher" class="form-control" required ng-model="SelectedEdtion" ng-options="item.Name for item in PublisherList">
+                                    <option value="">-- Wybierz --</option>
+                                </select>
+                                <small class="has-error-inpunt" ng-show="!cartForm.publisher.$valid">Pole <b>Wydawnictwo</b> jest wymagane.</small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="email">Wydanie:</label>
+                            <div class="col-sm-10">
+                                <select name="editions" class="form-control" required ng-model="SelectedPublisher" ng-options="item.Name for item in EditionsList">
+                                    <option value="">-- Wybierz --</option>
+                                </select>
+                                <small class="has-error-inpunt" ng-show="!cartForm.editions.$valid">Pole <b>Wydanie</b> jest wymagane.</small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="email">Nośnik:</label>
+                            <div class="col-sm-10">
+                                <select name="medium" class="form-control" required ng-model="SelectedMedium" ng-options="item.Name for item in MediumsList">
+                                    <option value="">-- Wybierz --</option>
+                                </select>
+                                <small class="has-error-inpunt" ng-show="!cartForm.medium.$valid">Pole <b>Nośnik</b> jest wymagane.</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="email">Ilość:</label>
+                            <div class="col-sm-10">
+                                <input namme="quantity" class="form-control" required type="number" ng-model="Quantity" />
+                                <small class="has-error-inpunt" ng-show="!ValidateQuantity(Quantity)">Wartość tego pola musi być w przedziale 1-999.</small>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" data-dismiss="modal" class="btn btn-danger">Anuluj</a>
+                        <a href="#" class="btn btn-primary" ng-disabled="!ValidateForm(SelectedCovers,SelectedEdtion,SelectedPublisher,SelectedMedium,Quantity)" data-dismiss="modal" ng-click="AddToCart()">OK</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </section>
+</div>
+</form>
+</div>
+
+</section>
+</div>
