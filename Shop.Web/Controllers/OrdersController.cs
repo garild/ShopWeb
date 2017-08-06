@@ -28,7 +28,12 @@ namespace Shop.Web.Controllers
 
         public JsonResult GetOrdersList()
         {
-            return new JsonResult { Data = Cart, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            int Quantity = 0;
+            if (Cart != null)
+            {
+               Cart.ForEach(p => Quantity += p.Quantity);
+            }
+            return new JsonResult { Data = Quantity, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
 
         public JsonResult OrderBook(ShopCart item)
@@ -36,14 +41,23 @@ namespace Shop.Web.Controllers
             
             if (Cart != null)
             {
-                var idnex = Cart.IndexOf(item);
-                if (idnex > 0)
-                    Cart[idnex].Quantity += item.Quantity;
-                else
+                var product = item.Product[0];
+                var itemExists = false; ;
+                Cart.ForEach(p =>
+                {
+                    p.Product.ForEach(d =>
+                     {
+                         if (d.CoverId == product.CoverId && d.EditionId == product.EditionId && d.MediumId == product.MediumId && d.PublisherId == product.PublisherId)
+                         {
+                             itemExists = true;
+                             p.Quantity += item.Quantity;
+                         }
+                     });
+                });
+                if (!itemExists)
                 {
                     Cart.Add(item);
                 }
-
             }
             else
             {

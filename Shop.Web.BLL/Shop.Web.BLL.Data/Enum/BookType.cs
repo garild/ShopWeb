@@ -11,8 +11,6 @@ namespace Shop.Web.BLL.Data.Enum
     {
         AudioBooks = 1,
         EBooks = 2,
-        News = 3,
-        Upcoming = 4,
-        SuperOccasions = 5
+      
     }
 }

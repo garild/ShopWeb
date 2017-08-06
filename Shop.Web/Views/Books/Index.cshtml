@@ -15,9 +15,8 @@
 <link href="/HtmlTemplate/Books/BooksCss.css" rel="stylesheet" />
 
 <div id="0">
-
-    <uib-tabset>
-        <uib-tab ng-repeat="tab in TabList" ng-click="LoadData(tab.SearchBy)" heading="{{tab.title}}" active="tab.active" disable="tab.disabled">
+    <uib-tabset >
+        <uib-tab  ng-repeat="tab in TabList" ng-click="LoadData(tab.SearchBy)" heading="{{tab.title}}" active="tab.active" disable="tab.disabled">
             <div ng-include="tab.template" ng-show="tab.active"></div>
         </uib-tab>
     </uib-tabset>

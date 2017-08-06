@@ -16,50 +16,43 @@ namespace TestShopService
         }
 
         [TestMethod]
-        public void Search_Data_By_Null_Paramas_Result_IsDefault_Type()
+        public void Search_Data_By_Paramas_Audiobooks_NullParams()
         {
-
             var _service = new BookContractorClient();
             var bookType = BookType.AudioBooks;
-            string title = null;
-            string publisher = null;
             var result = _service.FindBooks(bookType, null, null);
 
-            Assert.AreNotSame(result, new Book());
-           
-        }
-
-      
-
-        [TestMethod]
-        public void Search_Data_By_Paramas_Audiobooks()
-        {
-            var _service = new BookContractorClient();
-            var bookType = BookType.AudioBooks;
-            string title = "";
-            string publisher = "G";
-            var result = _service.FindBooks(bookType, title, publisher);
-
             Assert.IsNotNull(result);
         }
 
         [TestMethod]
-        public void Search_Data_By_Paramas_News_NotNull()
+        public void Search_Data_By_Paramas_AudioBooks_NotNull()
         {
             var _service = new BookContractorClient();
-            var bookType = BookType.News;
             string title = "Uwod";
             string publisher = "g";
-            var result = _service.FindBooks(bookType, title, publisher);
+            var result = _service.FindBooks(BookType.AudioBooks, title, publisher);
 
             Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void Find_E_Book()
+        {
+            var _service = new BookContractorClient();
+            var bookType = BookType.EBooks;
+            string title = "Zaburzenie";
+            string publisher = "OSP";
+            var result1 = _service.FindBooks(bookType, title, publisher);
+
+            Assert.IsTrue(result1.Length > 0);
         }
 
         [TestMethod]
         public void Compare_AllBooks_SearchBooks()
         {
             var _service = new BookContractorClient();
-            var bookType = BookType.SuperOccasions;
+            var bookType = BookType.EBooks;
             string title = "";
             string publisher = "G";
             var result1 = _service.FindBooks(bookType, title, publisher);
@@ -68,17 +61,5 @@ namespace TestShopService
             Assert.AreNotSame(result1, result2);
         }
 
-        [TestMethod]
-        public void Find_1_Book()
-        {
-            var _service = new BookContractorClient();
-            var bookType = BookType.SuperOccasions;
-            string title = "Zaburzenie";
-            string publisher = "OSP";
-            var result1 = _service.FindBooks(bookType, title, publisher);
-          
-
-            Assert.IsTrue(result1.Length == 1);
-        }
     }
 }

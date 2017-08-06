@@ -12,7 +12,7 @@ using DataLayer.Shop.Web.BLL.Service.Books.Interface;
 
 namespace Shop.Web.BLL.Service.Books.Implementation
 {
-    public class BooksService 
+    public class BooksService<T> where T:class,new() 
     {
         public readonly IBook repository;
 
@@ -58,7 +58,7 @@ namespace Shop.Web.BLL.Service.Books.Implementation
         {
             using (var _ctx = new ShopWebRepository<ShopWebEntities>())
             {
-                var data = _ctx.Context.Books.ToList(); ;
+                var data = _ctx.Context.Books.OrderBy(p => p.DateRelease).ToList();
                 return data;
             }
         }
@@ -68,7 +68,7 @@ namespace Shop.Web.BLL.Service.Books.Implementation
             var searchBy = $"{search}";
             using (var _ctx = new ShopWebRepository<ShopWebEntities>())
             {
-                var data = _ctx.Context.Books.Where(p => p.Name.Contains(searchBy) || p.Publisher.Contains(searchBy)).ToList();
+                var data = _ctx.Context.Books.Where(p => p.Name.Contains(searchBy) || p.Publisher.Contains(searchBy)).OrderBy(p=>p.DateRelease).ToList();
                 return data;
             }
         }
@@ -84,7 +84,7 @@ namespace Shop.Web.BLL.Service.Books.Implementation
             var searchBy = $"{search}";
             using (var _ctx = new ShopWebRepository<ShopWebEntities>())
             {
-                var data = _ctx.Context.Books.Where(p => p.BookType_Id == (int)type && p.Name.Contains(searchBy) || p.Publisher.Contains(searchBy)).ToList();
+                var data = _ctx.Context.Books.Where(p => p.BookType_Id == (int)type && p.Name.Contains(searchBy) || p.Publisher.Contains(searchBy)).OrderBy(p => p.DateRelease).ToList();
                 return data;
             }
         }
@@ -93,7 +93,7 @@ namespace Shop.Web.BLL.Service.Books.Implementation
         {
             using (var _ctx = new ShopWebRepository<ShopWebEntities>())
             {
-                var data = _ctx.Context.Books.Where(p => p.BookType_Id == (int)bookType).ToList();
+                var data = _ctx.Context.Books.Where(p => p.BookType_Id == (int)bookType).OrderBy(p => p.DateRelease).ToList();
                 return data;
             }
         }
@@ -109,7 +109,7 @@ namespace Shop.Web.BLL.Service.Books.Implementation
             var searchBy = $"{search}";
             using (var _ctx = new ShopWebRepository<ShopWebEntities>())
             {
-                var data = _ctx.Context.Books.Where(p => p.BookType_Id == (int)type && p.Name.Like(searchBy) || p.Publisher.Like(searchBy)).ToList();
+                var data = _ctx.Context.Books.Where(p => p.BookType_Id == (int)type && p.Name.Contains(searchBy) || p.Publisher.Contains(searchBy)).OrderBy(p => p.DateRelease).ToList();
                 return data;
             }
         }
@@ -118,7 +118,7 @@ namespace Shop.Web.BLL.Service.Books.Implementation
         {
             using (var _ctx = new ShopWebRepository<ShopWebEntities>())
             {
-                var data = _ctx.Context.Books.Where(p => p.BookType_Id == (int)bookType).ToList();
+                var data = _ctx.Context.Books.Where(p => p.BookType_Id == (int)bookType).OrderBy(p => p.DateRelease).ToList();
                 return data;
             }
         }
@@ -130,7 +130,7 @@ namespace Shop.Web.BLL.Service.Books.Implementation
         {
             using (var _ctx = new ShopWebRepository<ShopWebEntities>())
             {
-                var data = _ctx.Context.Books.Where(p => p.DateRelease >= DateTime.Now && DbFunctions.DiffDays(DateTime.Now, p.DateRelease) <= 14).ToList();
+                var data = _ctx.Context.Books.Where(p => p.DateRelease >= DateTime.Now && DbFunctions.DiffDays(DateTime.Now, p.DateRelease) <= 14).OrderBy(p => p.DateRelease).ToList();
                 return data;
             }
         }
@@ -139,7 +139,7 @@ namespace Shop.Web.BLL.Service.Books.Implementation
             var searchBy = $"{search}";
             using (var _ctx = new ShopWebRepository<ShopWebEntities>())
             {
-                var data = GetBooks().Where(p => p.Name.Contains(searchBy) || p.Publisher.Contains(searchBy)).ToList();
+                var data = GetBooks().Where(p => p.Name.Contains(searchBy) || p.Publisher.Contains(searchBy)).OrderBy(p => p.DateRelease).ToList();
                 return data;
             }
         }
@@ -152,7 +152,7 @@ namespace Shop.Web.BLL.Service.Books.Implementation
         {
             using (var _ctx = new ShopWebRepository<ShopWebEntities>())
             {
-                var data = _ctx.Context.Books.Where(p => DbFunctions.DiffDays(DateTime.Now, p.DateRelease) > 14).ToList();
+                var data = _ctx.Context.Books.Where(p => DbFunctions.DiffDays(DateTime.Now, p.DateRelease) > 14).OrderBy(p => p.DateRelease).ToList();
                 return data;
             }
         }
@@ -162,7 +162,7 @@ namespace Shop.Web.BLL.Service.Books.Implementation
             var searchBy = $"{search}";
             using (var _ctx = new ShopWebRepository<ShopWebEntities>())
             {
-                var data = GetBooks().Where(p => p.Name.Contains(searchBy) || p.Publisher.Contains(searchBy)).ToList();
+                var data = GetBooks().Where(p => p.Name.Contains(searchBy) || p.Publisher.Contains(searchBy)).OrderBy(p => p.DateRelease).ToList();
                 return data;
             }
         }

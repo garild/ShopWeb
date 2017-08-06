@@ -1,6 +1,5 @@
 /// <reference path="../scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="../scripts/typings/angularjs/angular-resource.d.ts" />
-/// <reference path="ShopCart.ts" />
 var BooksModule;
 (function (BooksModule) {
     var app = angular.module("MyBooks", ['ui.bootstrap', 'ngSanitize']);
@@ -23,9 +22,46 @@ var BooksModule;
         BooksType[BooksType["Upcoming"] = 5] = "Upcoming";
         BooksType[BooksType["SuperOccasions"] = 6] = "SuperOccasions";
     })(BooksType || (BooksType = {}));
+    function GetApiUrlByBookType(booksType, searchData) {
+        var apiUrl = "";
+        var searchByParam = searchData !== null;
+        switch (booksType) {
+            case BooksType.All:
+                {
+                    apiUrl = searchByParam ? '/Books/FindBookAll' : '/Books/GetAllBooks';
+                }
+                break;
+            case BooksType.AudioBooks:
+                {
+                    apiUrl = searchByParam ? '/Books/FindBookAudiotbooks' : '/Books/GetAudioBooks';
+                }
+                break;
+            case BooksType.EBooks:
+                {
+                    apiUrl = searchByParam ? '/Books/FindEBook' : '/Books/GetEBooks';
+                }
+                break;
+            case BooksType.News:
+                {
+                    apiUrl = searchByParam ? '/Books/FindNews' : '/Books/GetNews';
+                }
+                break;
+            case BooksType.Upcoming:
+                {
+                    apiUrl = searchByParam ? '/Books/FindUpcomming' : '/Books/GetUpComming';
+                }
+                break;
+            case BooksType.SuperOccasions:
+                {
+                    apiUrl = searchByParam ? '/Books/FindPromotions' : '/Books/GetPromotions';
+                }
+                break;
+            default:
+        }
+        return apiUrl;
+    }
     app.controller("BooksController", function ($scope, $http) {
         $scope.isLoading = true;
-        $scope.productCount = 0;
         $scope.IsBookType = 1;
         $scope.SearchPhrase;
         $scope.DataIsNull = false;
@@ -46,13 +82,16 @@ var BooksModule;
         };
         $scope.FindBook = function (phrase) {
             $scope.DataList = null;
-            console.log($scope.IsBookType);
+            $scope.IsBookType == null ? 1 : $scope.IsBookType;
             if (phrase !== undefined) {
                 if (parseInt(phrase) > 0 && parseInt(phrase) < 11) {
-                    $http.post("Books/FindBookAll", {
+                    var apiUrl = GetApiUrlByBookType($scope.IsBookType, phrase);
+                    console.log($scope.IsBookType, phrase, apiUrl);
+                    $http.post(apiUrl, {
                         "search": phrase
                     }).then(function (fillFuled) {
                         if (fillFuled !== null && fillFuled.data.length > 0) {
+                            $scope.DataIsNull = false;
                             $scope.DataList = fillFuled.data;
                         }
                         else
@@ -64,12 +103,28 @@ var BooksModule;
                 }
             }
         };
+        // Emit Event 
+        $scope.$on('RefreshPrudcts', function (event) {
+            $http.get('/Orders/GetOrdersList').then(function (fillFulled) {
+                if (fillFulled.data !== null) {
+                    console.log(fillFulled.data);
+                    $scope.productCount = fillFulled.data;
+                }
+                else
+                    $scope.productCount = 0;
+            }, function (error) {
+                alert(error);
+            });
+        });
         //OnLoad
         $http.get('/Orders/GetOrdersList').then(function (fillFulled) {
             if (fillFulled.data !== null) {
-                $scope.productCount = fillFulled.Quantity;
+                console.log(fillFulled.data);
+                $scope.productCount = fillFulled.data;
+                console.log($scope.productCount);
             }
-            $scope.productCount = 0;
+            else
+                $scope.productCount = 0;
         }, function (error) {
             alert(error);
         });
@@ -127,40 +182,7 @@ var BooksModule;
         // Load Data on Tab click
         function GetData(booksType) {
             $scope.IsBookType = booksType;
-            var apiUrl = '';
-            switch (booksType) {
-                case BooksType.All:
-                    {
-                        apiUrl = '/Books/GetAllBooks';
-                    }
-                    break;
-                case BooksType.AudioBooks:
-                    {
-                        apiUrl = '/Books/GetAudioBooks';
-                    }
-                    break;
-                case BooksType.EBooks:
-                    {
-                        apiUrl = '/Books/GetEBooks';
-                    }
-                    break;
-                case BooksType.News:
-                    {
-                        apiUrl = '/Books/GetNews';
-                    }
-                    break;
-                case BooksType.Upcoming:
-                    {
-                        apiUrl = '/Books/GetUpComming';
-                    }
-                    break;
-                case BooksType.SuperOccasions:
-                    {
-                        apiUrl = '/Books/GetPromotions';
-                    }
-                    break;
-                default:
-            }
+            var apiUrl = GetApiUrlByBookType(booksType, null);
             $http.get(apiUrl).then(function (d) {
                 if (d !== null && d.data.length > 0) {
                     $scope.DataList = d.data;
@@ -253,9 +275,7 @@ var BooksModule;
                     "Product": product
                 }
             }).then(function (fillFulled) {
-                console.log($scope.productCount);
-                $scope.productCount = fillFulled.data[0].Quantity;
-                console.log($scope.productCount, fillFulled.data[0].Quantity);
+                $scope.$emit('RefreshPrudcts');
             });
         };
         $scope.ValidateQuantity = function (data) {
