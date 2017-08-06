@@ -68,7 +68,6 @@ var BooksModule;
         $scope.DataList = [];
         $scope.sortType = "name";
         $scope.sortReverse = true;
-        $scope.IsBookType = null;
         $scope.IsNewType = null;
         $scope.showModal = false;
         $scope.open = function () {
@@ -99,6 +98,7 @@ var BooksModule;
                     });
                 }
                 if (parseInt(phrase) == 0) {
+                    console.log(phrase, $scope.IsBookType);
                     GetData($scope.IsBookType == null ? 1 : $scope.IsBookType);
                 }
             }
@@ -183,13 +183,16 @@ var BooksModule;
         function GetData(booksType) {
             $scope.IsBookType = booksType;
             var apiUrl = GetApiUrlByBookType(booksType, null);
+            console.log(booksType, apiUrl);
             $http.get(apiUrl).then(function (d) {
                 if (d !== null && d.data.length > 0) {
                     $scope.DataList = d.data;
                     $scope.isLoading = false;
+                    $scope.DataIsNull = false;
                 }
             }, function (error, status) {
                 $scope.isLoading = false;
+                $scope.DataIsNull = false;
                 console.log(error, status);
             });
         }

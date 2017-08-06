@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>Projekt Rekrutacyjny</title>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
@@ -107,8 +107,8 @@
 </head>
 <body ng-app="MyBooks">
 
-    
-    
+
+
 
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -124,7 +124,7 @@
     <div class="container body-content" ng-controller="BooksController">
 
 
-        <modal  visible="IsModalVisible">
+        <modal visible="IsModalVisible">
         </modal>
 
         <div class="row">
@@ -138,22 +138,23 @@
                             </div>
                             <div class="col-xs-6 col-sm-5">
                                 <form name="cartList">
-                                <div class="search-form">
-                                    <label><b>Wyszukiwarka </b></label>
-                                    <div class="form-group btn-group">
-                                        <input type="number" name="sreachData" class="form-control" ng-model="SearchPhrase" style="padding: 6px 40px"  />
-                                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                    <div class="search-form">
+                                        <label><b>Wyszukiwarka </b></label>
+                                        <div class="form-group btn-group">
+                                            <input type="number" name="sreachData" class="form-control" ng-model="SearchPhrase" style="padding: 6px 40px" />
+                                            <span class="glyphicon glyphicon-search form-control-feedback"></span>
 
+                                        </div>
+                                        <button type="button" style="padding:6px 20px;margin-top:-10px" class="btn btn-default" ng-click="FindBook(SearchPhrase)">Szukaj</button>
                                     </div>
-                                    <button type="button" style="padding:6px 20px;margin-top:-10px" class="btn btn-default" ng-click="FindBook(SearchPhrase)">Szukaj</button>
-                                </div>
-                                  <small class="has-error-inpunt" ng-show="!SearchPhraseIsValid(SearchPhrase,10)">Wartość tego pola musi być w przedziale 1-10.</small>
-                             </form>
+                                    <small class="has-error-inpunt" ng-show="!SearchPhraseIsValid(SearchPhrase,10)">Wartość tego pola musi być w przedziale 1-10.</small>
+                                </form>
                             </div>
                             <div class="col-xs-6 col-sm-3">
                                 <div class="search-form" style="margin-top:20px;margin-left:10px">
                                     <label>Twój koszyk</label>  <div style="width:150px;padding:10px 5px; margin-bottom:0;display:inline-block" class="well">
-                                        Liczba produktów: {{productCount}}</div>
+                                        Liczba produktów: {{productCount}}
+                                    </div>
 
                                 </div>
                             </div>

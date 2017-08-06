@@ -54,19 +54,19 @@ module BooksModule {
 
             case BooksType.News:
                 {
-                     apiUrl = searchByParam ? '/Books/FindNews': '/Books/GetNews';
+                    apiUrl = searchByParam ? '/Books/FindNews' : '/Books/GetNews';
                 } break;
 
             case BooksType.Upcoming:
                 {
-                    apiUrl = searchByParam ? '/Books/FindUpcomming': '/Books/GetUpComming';
-                   
+                    apiUrl = searchByParam ? '/Books/FindUpcomming' : '/Books/GetUpComming';
+
                 } break;
 
             case BooksType.SuperOccasions:
                 {
-                    apiUrl = searchByParam ? '/Books/FindPromotions': '/Books/GetPromotions';
-                    
+                    apiUrl = searchByParam ? '/Books/FindPromotions' : '/Books/GetPromotions';
+
                 } break;
             default:
         }
@@ -85,7 +85,6 @@ module BooksModule {
         $scope.sortType = "name"
         $scope.sortReverse = true
 
-        $scope.IsBookType = null;
         $scope.IsNewType = null;
 
         $scope.showModal = false;
@@ -121,6 +120,7 @@ module BooksModule {
                         })
                 }
                 if (parseInt(phrase) == 0) {
+                    console.log(phrase, $scope.IsBookType)
                     GetData($scope.IsBookType == null ? 1 : $scope.IsBookType)
                 }
             }
@@ -216,14 +216,16 @@ module BooksModule {
         function GetData(booksType: BooksType) {
             $scope.IsBookType = booksType;
             let apiUrl: string = GetApiUrlByBookType(booksType, null);
-
+            console.log(booksType, apiUrl)
             $http.get(apiUrl).then(function (d: any) {
                 if (d !== null && d.data.length > 0) {
                     $scope.DataList = d.data;
                     $scope.isLoading = false;
+                    $scope.DataIsNull = false
                 }
             }, function (error, status) {
                 $scope.isLoading = false;
+                $scope.DataIsNull = false
                 console.log(error, status)
             })
 

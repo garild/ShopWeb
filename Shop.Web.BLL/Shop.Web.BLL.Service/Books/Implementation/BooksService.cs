@@ -68,7 +68,7 @@ namespace Shop.Web.BLL.Service.Books.Implementation
             var searchBy = $"{search}";
             using (var _ctx = new ShopWebRepository<ShopWebEntities>())
             {
-                var data = _ctx.Context.Books.Where(p => p.Name.Contains(searchBy) || p.Publisher.Contains(searchBy)).OrderBy(p=>p.DateRelease).ToList();
+                var data = _ctx.Context.Books.Where(p => p.Name.Contains(searchBy) || p.Author.Contains(searchBy)).OrderBy(p=>p.DateRelease).ToList();
                 return data;
             }
         }
@@ -84,7 +84,7 @@ namespace Shop.Web.BLL.Service.Books.Implementation
             var searchBy = $"{search}";
             using (var _ctx = new ShopWebRepository<ShopWebEntities>())
             {
-                var data = _ctx.Context.Books.Where(p => p.BookType_Id == (int)type && p.Name.Contains(searchBy) || p.Publisher.Contains(searchBy)).OrderBy(p => p.DateRelease).ToList();
+                var data = _ctx.Context.Books.Where(p => p.BookType_Id == (int)type && p.Name.Contains(searchBy) || p.Author.Contains(searchBy)).OrderBy(p => p.DateRelease).ToList();
                 return data;
             }
         }
@@ -109,7 +109,7 @@ namespace Shop.Web.BLL.Service.Books.Implementation
             var searchBy = $"{search}";
             using (var _ctx = new ShopWebRepository<ShopWebEntities>())
             {
-                var data = _ctx.Context.Books.Where(p => p.BookType_Id == (int)type && p.Name.Contains(searchBy) || p.Publisher.Contains(searchBy)).OrderBy(p => p.DateRelease).ToList();
+                var data = _ctx.Context.Books.Where(p => p.BookType_Id == (int)type && p.Name.Contains(searchBy) || p.Author.Contains(searchBy)).OrderBy(p => p.DateRelease).ToList();
                 return data;
             }
         }
@@ -139,7 +139,7 @@ namespace Shop.Web.BLL.Service.Books.Implementation
             var searchBy = $"{search}";
             using (var _ctx = new ShopWebRepository<ShopWebEntities>())
             {
-                var data = GetBooks().Where(p => p.Name.Contains(searchBy) || p.Publisher.Contains(searchBy)).OrderBy(p => p.DateRelease).ToList();
+                var data = GetBooks().Where(p => p.Name.Contains(searchBy) || p.Author.Contains(searchBy)).OrderBy(p => p.DateRelease).ToList();
                 return data;
             }
         }
@@ -162,7 +162,7 @@ namespace Shop.Web.BLL.Service.Books.Implementation
             var searchBy = $"{search}";
             using (var _ctx = new ShopWebRepository<ShopWebEntities>())
             {
-                var data = GetBooks().Where(p => p.Name.Contains(searchBy) || p.Publisher.Contains(searchBy)).OrderBy(p => p.DateRelease).ToList();
+                var data = GetBooks().Where(p => p.Name.Contains(searchBy) || p.Author.Contains(searchBy)).OrderBy(p => p.DateRelease).ToList();
                 return data;
             }
         }
@@ -176,7 +176,7 @@ namespace Shop.Web.BLL.Service.Books.Implementation
             var searchBy = $"{search}";
             using (var _ctx = new ShopWebRepository<ShopWebEntities>())
             {
-                var data = _ctx.Context.Books.Where(p => p.IsSuperPromtion == true && p.Name.Contains(searchBy) || p.Publisher.Like($"{search}")).ToList();
+                var data = _ctx.Context.Books.Where(p => p.IsSuperPromtion == true && p.Name.Contains(searchBy) || p.Author.Contains(searchBy)).ToList();
                 return data;
             }
         }

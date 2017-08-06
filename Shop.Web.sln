@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.Web.BLL", "Shop.Web.BL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestShopService", "TestShopService\TestShopService.csproj", "{62B095E9-41EE-4990-AAB4-605084A3C753}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SkryptySQL", "SkryptySQL", "{BA884CA4-8323-4EF4-ADCF-371F3884D107}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
